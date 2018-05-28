@@ -1,0 +1,56 @@
+<!doctype html>
+<meta charset="utf8" />
+
+<title>base-lol - binary-to-emoji encoding scheme</title>
+
+<style>
+    body {
+        font-family: Helvetica, "Helvetica Neue", sans-serif;
+        background: #61C7FF;
+        color: #fff;
+
+        display: flex;
+        flex-direction: column;
+
+        min-height: 100vh;
+
+        font-size: 18px;
+    }
+
+    h1 {
+        height: auto;
+    }
+
+    .uploadBlock {
+        flex: 1;
+        border: 10px dashed #C6F5FF;
+        padding: 10px;
+        font-size: 64px;
+        margin: 10px 0;
+    }
+
+    .dragover {
+        border: 10px dashed #fff;
+        background: rgba(255,255,255,0.25);
+    }
+</style>
+
+<script type="module"
+        src="demo-page.js"></script>
+
+<body>
+    <h1>base-lol - encode binary data as emojis</h1>
+
+    <noscript>
+        This won't work without Javascript. Time to get out of lynx
+        and into a browser Richard Stallman!
+    </noscript>
+
+    <p class="uploadBlock" data-action="encode">
+        0️⃣1️⃣1️⃣0️⃣ ➡ 😜🚀 <input type=file />
+    </p>
+
+    <p class="uploadBlock" data-action="decode">
+        😜🚀 ➡ 0️⃣1️⃣1️⃣0️⃣ <input type=file />
+    </p>
+</body>

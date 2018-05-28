@@ -1,0 +1,11 @@
+{
+  "name": "",
+  "version": "",
+  "description": "Encodes/decodes binary data as a sequence of emojis.",
+  "scripts": {
+    "test": "node base-lol.test.js"
+  },
+  "devDependencies": {
+    "browser-sync": "2.24.4"
+  }
+}
