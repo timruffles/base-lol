@@ -1,8 +1,5 @@
-'use strict';
-
-const { encodeUInt8Array, decodeString } = require('./base-lol');
-
-const assert = require('assert');
+import { encodeUInt8Array, decodeString } from './base-lol';
+import assert from 'assert';
 
 roundTrip(encodeUInt8Array, decodeString, [245]);
 

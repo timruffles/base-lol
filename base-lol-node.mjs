@@ -1,7 +1,9 @@
-const stream = require('stream');
-const util = require('util');
+import stream from 'stream';
+import util from 'util';
+import fs from 'fs';
+import { encode, decode } from './base-lol';
+
 const pipeline = util.promisify(stream.pipeline);
-const fs = require('fs');
 
 const binaryToEmoji = new stream.Transform({
     transform(chunk, encoding, callback) {
@@ -45,7 +47,7 @@ const emojiToBinary = new stream.Transform({
     }
 });
 
-if(require.main === module) {
+const main = () => {
     const stream = process.argv.some(f => f === '--decode')
         ? emojiToBinary
         : binaryToEmoji;
@@ -59,4 +61,6 @@ if(require.main === module) {
             console.error(e.stack);
             process.exit(1);
         })
-}
+};
+
+main();

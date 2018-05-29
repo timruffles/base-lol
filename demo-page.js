@@ -1,5 +1,6 @@
 'use strict';
 
+import { encode } from './base-lol.mjs';
 
 // wait for document to be completed
 document.addEventListener('DOMContentLoaded', main);
@@ -8,8 +9,6 @@ function main() {
     if(!assertBrowserSupport()) return;
 
     addDragListeners();
-
-    startWorker();
 }
 
 function assertBrowserSupport() {
@@ -50,14 +49,14 @@ function addDragListeners() {
             e.preventDefault();
             el.classList.remove('dragover');
 
-            const files = event.dataTransfer.files;
+            const files = [...event.dataTransfer.files];
             const handler = action === 'encode'
                 ? encodeFiles
                 : decodeFiles;
 
             console.log(files);
 
-            [...files].forEach(handler);
+            handler(files);
         })
     }
 
@@ -70,60 +69,31 @@ function addDragListeners() {
     })
 }
 
-function startWorker() {
-    window.lolWorker = new Worker('base-lol-worker.js', {
-        type:'module',
-    });
-    window.lolJobs = [];
 
-    window.onmessage = ({taskId, result}) => {
-        window.lolJobs[taskId](result);
-        window.lolJobs[taskId] = undefined;
-    };
-}
-
-function microtask(fn) {
-    return Promise.resolve().then(fn);
-}
-
-function runJob(job) {
-    const jobId = window.lolJobs.length;
-
-    microtask(() => {
-        window.lolWorker.postMessage(Object.assign({}, job, {
-            jobId,
-        }));
-    });
-
-    return new Promise((resolve, reject) => {
-        window.lolJobs[jobId] = ({ error, result }) => {
-            if(error) {
-                console.error('Error in worker', error);
-                reject(new Error(error.message));
-            } else {
-                resolve(result);
+async function encodeFiles(files) {
+    for(const file of files) {
+        const reader = new FileReader();
+        reader.addEventListener("loadend", () => {
+            let encoded = '';
+            for(let i = 0; i < reader.result.length; i++) {
+               encoded += encode(reader.result[i]);
             }
-        }
-    });
-}
+            const filename = file.name.replace(/(\.[^\.])?$/,
+                '.base-lol');
 
+            download(filename, encoded);
+        });
+        reader.readAsArrayBuffer(file);
+    }
+}
 
 function decodeFiles(files) {
-}
-
-function encodeFiles(files) {
-    runJob({
-        type: 'decode',
-    })
-}
-
-function fileAdded() {
 
 }
 
-function download(filename, text) {
+function download(filename, data) {
     const element = document.createElement('a');
-    element.setAttribute('href', 'data:application/octet-stream;');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8;' + data);
     element.setAttribute('download', filename);
 
     element.style.display = 'none';

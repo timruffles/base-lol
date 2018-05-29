@@ -2,7 +2,6 @@
  * - Always encoded as UTF-8 - as efficient as UTF-16 for non-BMP,
  *   and a good standard
  */
-'use strict';
 
 // use the most recognisable emojis for ascii/utf8 text
 const asciiTextStart = "😀".codePointAt(0);
