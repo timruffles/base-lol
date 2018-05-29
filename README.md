@@ -4,7 +4,7 @@ Encodes/decodes binary data as a sequence of emojis.
 
 ## Efficiency
 
-Encodes every byte as an emoji in utf8, so 32 bits! 25% efficent.
+Encodes every byte as an emoji in utf8, so 32 bits! 25% efficient.
 
 ## Demo
 
