@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Encodes/decodes binary data as a sequence of emojis.",
   "scripts": {
-    "demo": "node --experimental-modules base-lol-node.mjs < targets/max-tiny.jpg > demo.base-lol; head -c 20 demo.base-lol; node --experimental-modules base-lol-node.mjs --decode < demo.base-lol > demo-decoded.jpg; diff demo-decoded.jpg targets/max-tiny.jpg",
+    "demo": "node --experimental-modules base-lol-node.mjs < targets/max-tiny.jpg > tmp/demo.base-lol; head -c 20 tmp/demo.base-lol; node --experimental-modules base-lol-node.mjs --decode < tmp/demo.base-lol > tmp/demo-decoded.jpg; diff tmp/demo-decoded.jpg targets/max-tiny.jpg",
     "test": "node base-lol.test.js"
   },
   "devDependencies": {
