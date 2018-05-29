@@ -8,6 +8,10 @@ Encodes every byte as an emoji in utf8, so 32 bits! 25% efficent.
 
 ## Demo
 
+Requires node with ES6 module support.
+
     node base-lol.mjs < targets/max.jpg > max.base-lol
     node base-lol.mjs --decode < max.base-lol > max-decoded.jpg
     diff targets/max.jpg max-decoded.jpg
+
+
