@@ -48,6 +48,17 @@ export function encode(bite) {
   }
 }
 
+export function encodeTo(bite) {
+    if(bite < 65) {
+        return String.fromCodePoint(bite + lowStart);
+    } if (bite >= 128) {
+        return String.fromCodePoint(bite + highStart - 128);
+    } else {
+        // ascii printable
+        return String.fromCodePoint(asciiTextStart + bite - 65);
+    }
+}
+
 export function decode(codePoint) {
     if(codePoint >= asciiTextStart && codePoint <= asciiTextEnd) {
         return codePoint - asciiTextStart + 65;

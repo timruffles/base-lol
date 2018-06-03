@@ -1,11 +1,17 @@
 'use strict';
 
-import { encode } from './base-lol.mjs';
+import { encode, decode, decodeString } from './base-lol.mjs';
 
 // wait for document to be completed
 document.addEventListener('DOMContentLoaded', main);
 
 function main() {
+    window.baseLol = {
+        encode,
+        decode,
+        decodeString,
+    };
+
     if(!assertBrowserSupport()) return;
 
     addDragListeners();
@@ -70,30 +76,50 @@ function addDragListeners() {
 }
 
 
-async function encodeFiles(files) {
+function encodeFiles(files) {
     for(const file of files) {
         const reader = new FileReader();
         reader.addEventListener("loadend", () => {
+            const bytes = new Uint8Array(reader.result);
             let encoded = '';
-            for(let i = 0; i < reader.result.length; i++) {
-               encoded += encode(reader.result[i]);
+            for(const byte of bytes) {
+               encoded += encode(byte);
             }
-            const filename = file.name.replace(/(\.[^\.])?$/,
-                '.base-lol');
+            const filename = file.name.replace(/(\.[^\.]+)?$/,
+                '$1.base-lol');
 
-            download(filename, encoded);
+            download(filename, new Blob([encoded]));
         });
         reader.readAsArrayBuffer(file);
     }
 }
 
 function decodeFiles(files) {
+    for(const file of files) {
+        const reader = new FileReader();
+        reader.addEventListener("loadend", () => {
+            const input = new Uint8Array(reader.result);
+            const emojiString = new TextDecoder('utf-8').decode(input);
+            const output = new ArrayBuffer(input.byteLength/4);
+            const outputView = new DataView(output);
+            for(let i = 0; i < emojiString.length; i+=2) {
+                const codePoint = emojiString.codePointAt(i);
+                outputView.setUint8(i/2, decode(codePoint));
+            }
+            const filename = file.name.replace(/(\.[^\.]+)?\.base-lol$/,
+                '.decoded$1');
+
+            download(filename, new Blob([output]));
+        });
+        reader.readAsArrayBuffer(file);
+    }
 
 }
 
 function download(filename, data) {
     const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8;' + data);
+    const url = URL.createObjectURL(data);
+    element.setAttribute('href', url);
     element.setAttribute('download', filename);
 
     element.style.display = 'none';
@@ -101,4 +127,6 @@ function download(filename, data) {
 
     element.click();
     document.body.removeChild(element);
+
+    URL.revokeObjectURL(url);
 }

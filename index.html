@@ -6,8 +6,7 @@
 <style>
     body {
         font-family: Helvetica, "Helvetica Neue", sans-serif;
-        background: #61C7FF;
-        color: #fff;
+        color: #000;
 
         display: flex;
         flex-direction: column;
@@ -23,20 +22,27 @@
 
     .uploadBlock {
         flex: 1;
-        border: 10px dashed #C6F5FF;
+        border: 10px dashed #888;
         padding: 10px;
         font-size: 64px;
         margin: 10px 0;
+        color: #666;
     }
 
     .dragover {
-        border: 10px dashed #fff;
-        background: rgba(255,255,255,0.25);
+        border: 10px dashed #aaa;
+        background: #e4ffe2;
+    }
+
+    code {
+        background: rgba(255,255,255,0.1);
+        padding: 2px;
     }
 </style>
 
 <script type="module"
-        src="demo-page.js"></script>
+        src="demo-page.js"
+        ></script>
 
 <body>
     <h1>base-lol - encode binary data as emojis</h1>
@@ -46,11 +52,19 @@
         and into a browser Richard Stallman!
     </noscript>
 
+    <p>Encodes binary data as a sequence of emojis in UTF-8. Ready for embedding in tweets, file-names, WiFi SSIDs etc!</p>
+
+    <p>As an example, the byte sequence <code>0xcafecafe</code> becomes 💋💿💋💿. This SVG <svg width="1em" height="1em"><circle fill="#FF0" cx="6" cy="6" r="6"/><circle cx="3" cy="4" r="1"/><circle cx="7" cy="4" r="1"/><path d="M2,6 C2,6 3,12 8,6"/></svg> (gzipped) becomes:</p>
+
+    <p>🐟👌🐈🐀🐀🐀🐀🐀🐂🐃👴🐩🐮😊😖👩💉💎💊🐫👷😔💋🐨🐩🐩👱💓💘🐯🐯🐯💘🐫🐷💗💌🐯😉💘🐷🐲🐰🐰💑🐇👫😏👳👴😈💏🐬😉💏😈😔😇💌💍💊👲😔😑😵😲🐳😏😑😇👯👱😔🐲🐃😑👖😟👫🐈😃💫💄🐕👃🐤👎🐡👓🐦😟😈😂🐴😈😲🐌💊👃💅👓🐌👆🐔😚🐥😞🐣🐝🐳🐅😦🐐😠👭😢😧👥😟👢🐃🐶🐗💥🐎🐻🐮🐀💖🐨💼👂👱🐀🐀🐀</p>
+
+    <p>Drag and drop or pick files to encode and decode. Also available for node, and as a cli.</p>
+
     <p class="uploadBlock" data-action="encode">
-        0️⃣1️⃣1️⃣0️⃣ ➡ 😜🚀 <input type=file />
+        1️⃣0️⃣1️⃣1️⃣ ➡ 🐋 <input type=file />
     </p>
 
     <p class="uploadBlock" data-action="decode">
-        😜🚀 ➡ 0️⃣1️⃣1️⃣0️⃣ <input type=file />
+        🐋 ➡ 1️⃣0️⃣1️⃣1️⃣<input type=file />
     </p>
 </body>
