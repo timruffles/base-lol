@@ -37,25 +37,25 @@ export function encodeString(s) {
     return s.split("").map(s => encode(s.charCodeAt(0))).join('');
 }
 
-export function encode(bite) {
-  if(bite < 65) {
-    return String.fromCodePoint(bite + lowStart);
-  } if (bite >= 128) {
-    return String.fromCodePoint(bite + highStart - 128);
+export function encode(byte) {
+  if(byte < 65) {
+    return String.fromCodePoint(byte + lowStart);
+  } if (byte >= 128) {
+    return String.fromCodePoint(byte + highStart - 128);
   } else {
     // ascii printable
-    return String.fromCodePoint(asciiTextStart + bite - 65);
+    return String.fromCodePoint(asciiTextStart + byte - 65);
   }
 }
 
-export function encodeTo(bite) {
-    if(bite < 65) {
-        return String.fromCodePoint(bite + lowStart);
-    } if (bite >= 128) {
-        return String.fromCodePoint(bite + highStart - 128);
+export function encodeTo(byte) {
+    if(byte < 65) {
+        return String.fromCodePoint(byte + lowStart);
+    } if (byte >= 128) {
+        return String.fromCodePoint(byte + highStart - 128);
     } else {
         // ascii printable
-        return String.fromCodePoint(asciiTextStart + bite - 65);
+        return String.fromCodePoint(asciiTextStart + byte - 65);
     }
 }
 

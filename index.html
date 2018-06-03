@@ -29,6 +29,10 @@
         color: #666;
     }
 
+    .uploadBlock p {
+        margin: 0;
+    }
+
     .dragover {
         border: 10px dashed #aaa;
         background: #e4ffe2;
@@ -37,6 +41,9 @@
     code {
         background: rgba(255,255,255,0.1);
         padding: 2px;
+    }
+    .minor {
+        font-size: 1rem;
     }
 </style>
 
@@ -54,17 +61,19 @@
 
     <p>Encodes binary data as a sequence of emojis in UTF-8. Ready for embedding in tweets, file-names, WiFi SSIDs etc!</p>
 
-    <p>As an example, the byte sequence <code>0xcafecafe</code> becomes 💋💿💋💿. This SVG <svg width="1em" height="1em"><circle fill="#FF0" cx="6" cy="6" r="6"/><circle cx="3" cy="4" r="1"/><circle cx="7" cy="4" r="1"/><path d="M2,6 C2,6 3,12 8,6"/></svg> (gzipped) becomes:</p>
+    <p>As an example, the byte sequence <code>0xcafecafe</code> becomes 💋💿💋💿. This SVG <svg width="1em" height="1em" style="transform: scale(2) translate(4px, 4px)"><circle fill="#FF0" cx="6" cy="6" r="6"/><circle cx="3" cy="4" r="1"/><circle cx="7" cy="4" r="1"/><path d="M2,6 C2,6 3,12 8,6"/></svg> (gzipped) becomes:</p>
 
     <p>🐟👌🐈🐀🐀🐀🐀🐀🐂🐃👴🐩🐮😊😖👩💉💎💊🐫👷😔💋🐨🐩🐩👱💓💘🐯🐯🐯💘🐫🐷💗💌🐯😉💘🐷🐲🐰🐰💑🐇👫😏👳👴😈💏🐬😉💏😈😔😇💌💍💊👲😔😑😵😲🐳😏😑😇👯👱😔🐲🐃😑👖😟👫🐈😃💫💄🐕👃🐤👎🐡👓🐦😟😈😂🐴😈😲🐌💊👃💅👓🐌👆🐔😚🐥😞🐣🐝🐳🐅😦🐐😠👭😢😧👥😟👢🐃🐶🐗💥🐎🐻🐮🐀💖🐨💼👂👱🐀🐀🐀</p>
 
-    <p>Drag and drop or pick files to encode and decode. Also available for node, and as a cli.</p>
+    <p>Drag and drop files to encode and decode. Also available for node, and as a cli.</p>
 
-    <p class="uploadBlock" data-action="encode">
-        1️⃣0️⃣1️⃣1️⃣ ➡ 🐋 <input type=file />
-    </p>
+    <div class="uploadBlock" data-action="encode">
+        1️⃣0️⃣1️⃣1️⃣ ➡ 🐋
+        <p class="minor">File to emojis</p>
+    </div>
 
-    <p class="uploadBlock" data-action="decode">
-        🐋 ➡ 1️⃣0️⃣1️⃣1️⃣<input type=file />
-    </p>
+    <div class="uploadBlock" data-action="decode">
+        <p>🐋 ➡ 1️⃣0️⃣1️⃣1️⃣</p>
+        <p class="minor">Emojis to file</p>
+    </div>
 </body>

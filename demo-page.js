@@ -1,6 +1,6 @@
 'use strict';
 
-import { encode, decode, decodeString } from './base-lol.mjs';
+import { encode, decode, decodeString, encodeString } from './base-lol.mjs';
 
 // wait for document to be completed
 document.addEventListener('DOMContentLoaded', main);
@@ -10,6 +10,7 @@ function main() {
         encode,
         decode,
         decodeString,
+        encodeString,
     };
 
     if(!assertBrowserSupport()) return;
