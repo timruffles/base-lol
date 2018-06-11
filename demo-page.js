@@ -16,6 +16,7 @@ function main() {
     if(!assertBrowserSupport()) return;
 
     addDragListeners();
+    addFileListeners();
 }
 
 function assertBrowserSupport() {
@@ -32,6 +33,23 @@ function assertBrowserSupport() {
     }
 
     return true;
+}
+
+function addFileListeners() {
+    for (const el of document.querySelectorAll('.uploadBlock input[type=file]')) {
+        el.addEventListener('change', e => {
+            const files = [...event.target.files];
+            const isEncode = e.target.parentElement.dataset.action
+                === 'encode';
+            const handler = isEncode
+                ? encodeFiles
+                : decodeFiles;
+
+            handler(files);
+        });
+
+    }
+
 }
 
 function addDragListeners() {
@@ -60,8 +78,6 @@ function addDragListeners() {
             const handler = action === 'encode'
                 ? encodeFiles
                 : decodeFiles;
-
-            console.log(files);
 
             handler(files);
         })
@@ -114,7 +130,6 @@ function decodeFiles(files) {
         });
         reader.readAsArrayBuffer(file);
     }
-
 }
 
 function download(filename, data) {
