@@ -1,8 +1,5 @@
-'use strict';
-
 import { encode, decode, decodeString, encodeString } from './base-lol.mjs';
 
-// wait for document to be completed
 document.addEventListener('DOMContentLoaded', main);
 
 function main() {
