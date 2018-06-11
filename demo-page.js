@@ -17,6 +17,11 @@ function main() {
 }
 
 function assertBrowserSupport() {
+    if(typeof TextDecoder === 'undefined' || !('ondrop' in document.body)) {
+        alert("Sorry - this was a on-the-tube hack, only Browsers with TextDecoder and drag/drop");
+        return false;
+    }
+
     try {
         eval('`hello`');
     } catch(e) {
@@ -24,10 +29,6 @@ function assertBrowserSupport() {
         return false;
     }
 
-    if(!('ondrag' in document.body)) {
-        alert("Sorry - this was a on-the-tube hack, HTML5-enabled browsers only :)");
-        return false;
-    }
 
     return true;
 }
