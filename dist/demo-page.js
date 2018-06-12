@@ -59,7 +59,6 @@
       }
   }
 
-  // wait for document to be completed
   document.addEventListener('DOMContentLoaded', main);
 
   function main() {
@@ -73,40 +72,21 @@
       if(!assertBrowserSupport()) return;
 
       addDragListeners();
-      addFileListeners();
   }
 
   function assertBrowserSupport() {
-      try {
-          eval('`hello`');
-      } catch(e) {
+      if(typeof TextDecoder === 'undefined' || !('ondrop' in document.body)) {
+          alert("Sorry - this was a on-the-tube hack, only Browsers with TextDecoder and drag/drop");
+          return false;
+      }
+
+      if(typeof Symbol === 'undefined') {
           alert("Sorry - this was a on-the-tube hack, ES2015+ browsers only :)");
           return false;
       }
 
-      if(!('ondrag' in document.body)) {
-          alert("Sorry - this was a on-the-tube hack, HTML5-enabled browsers only :)");
-          return false;
-      }
 
       return true;
-  }
-
-  function addFileListeners() {
-      for (const el of document.querySelectorAll('.uploadBlock input[type=file]')) {
-          el.addEventListener('change', e => {
-              const files = [...event.target.files];
-              const isEncode = e.target.parentElement.dataset.action
-                  === 'encode';
-              const handler = isEncode
-                  ? encodeFiles
-                  : decodeFiles;
-
-              handler(files);
-          });
-
-      }
-
   }
 
   function addDragListeners() {

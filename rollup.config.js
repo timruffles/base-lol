@@ -1,5 +1,7 @@
 export default {
     entry: 'demo-page.js',
-    output: 'dist/demo-page.js',
-    format: 'iffe',
+    output: {
+        file: 'dist/demo-page.js',
+        format: 'iife',
+    },
 };
