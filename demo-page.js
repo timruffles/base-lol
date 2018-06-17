@@ -97,7 +97,8 @@ function encodeFiles(files) {
                 );
             }
 
-            download(filename, new File([encoded], filename));
+            download(filename, new File([encoded], filename),
+                document.querySelector('.uploadBlock[data-action=encode]'));
         });
         reader.readAsArrayBuffer(file);
     });
@@ -127,7 +128,8 @@ function decodeFiles(files) {
             const filename = file.name.replace(/(\.[^\.]+)?\.base-lol$/,
                 '.decoded$1');
 
-            download(filename, new File([output], filename));
+            download(filename, new File([output], filename),
+                document.querySelector('.uploadBlock[data-action=decode]'));
         });
         reader.readAsArrayBuffer(file);
     });
@@ -150,21 +152,26 @@ function addFileListeners() {
     });
 }
 
-function download(filename, data) {
+function download(filename, data, targetEl) {
     showDeviceDownloadInstructions();
 
     const element = document.createElement('a');
     const url = URL.createObjectURL(data);
     element.setAttribute('href', url);
     element.setAttribute('download', filename);
+    element.innerHTML = filename;
 
-    element.style.display = 'none';
-    document.body.appendChild(element);
+    element.style.display = isMobile() ? '' : 'none';
 
-    element.click();
-    document.body.removeChild(element);
-
-    URL.revokeObjectURL(url);
+    // auto-download on desktop
+    if(isMobile()) {
+        targetEl.appendChild(element);
+    } else {
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        URL.revokeObjectURL(url);
+    }
 }
 
 function arrayFrom(xs) {
@@ -179,5 +186,5 @@ function showDeviceDownloadInstructions() {
 }
 
 function isMobile() {
-    return /Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile/.test(navigation.userAgent);
+    return /Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile/.test(navigator.userAgent);
 }
