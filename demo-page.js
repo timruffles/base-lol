@@ -173,7 +173,8 @@ function arrayFrom(xs) {
 
 function showDeviceDownloadInstructions() {
     if(isMobile() && !state.shownMobileWarning) {
-       alert(`ℹ️ If your mobile browser doesn't keep file extensions (iOS 🙈), manually rename it to see encode/decode`);
+        state.shownMobileWarning = true;
+        alert(`ℹ️ If your mobile browser doesn't keep file extensions (iOS 🙈), manually rename it to see encode/decode`);
     }
 }
 
