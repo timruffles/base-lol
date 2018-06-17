@@ -24,8 +24,8 @@ function main() {
 }
 
 function assertBrowserSupport() {
-    if(typeof Symbol === 'undefined') {
-        alert("Sorry - this was a on-the-tube hack, ES2015+ browsers only :)");
+    if(typeof FileReader === 'undefined') {
+        alert("Sorry - this was a on-the-tube hack, HTML5 browsers only :)");
         return false;
     }
 
@@ -34,7 +34,7 @@ function assertBrowserSupport() {
 }
 
 function addDragListeners() {
-    for (const el of document.querySelectorAll('.uploadBlock')) {
+    arrayFrom(document.querySelectorAll('.uploadBlock')).forEach(el => {
         const action = el.dataset.action;
 
         el.addEventListener('dragover', e => {
@@ -62,7 +62,7 @@ function addDragListeners() {
 
             handler(files);
         })
-    }
+    });
 
     // not pleasant to replace the page
     document.body.addEventListener('dragover', e => {
@@ -75,20 +75,20 @@ function addDragListeners() {
 
 
 function encodeFiles(files) {
-    for(const [index, file] of files.entries()) {
+    arrayFrom(files).forEach((file, index) => {
         const reader = new FileReader();
         reader.addEventListener("loadend", () => {
             const bytes = new Uint8Array(reader.result);
             let encoded = '';
-            for(const byte of bytes) {
-               encoded += encode(byte);
+            for(let i = 0; i < bytes.length; i++) {
+               encoded += encode(bytes[i]);
             }
             const filename = file.name.replace(/(\.[^\.]+)?$/,
                 '$1.base-lol');
 
             if(index === 0) {
                 preview(
-                    Array.from(bytes.slice(0, BYTES_PREVIEW)),
+                    [].slice.call(bytes, 0, BYTES_PREVIEW),
                     encoded.slice(0, BYTES_PREVIEW * EMOJI_PER_BYTE * CHARACTERS_PER_EMOJI)
                 );
             }
@@ -96,7 +96,7 @@ function encodeFiles(files) {
             download(filename, new Blob([encoded]));
         });
         reader.readAsArrayBuffer(file);
-    }
+    });
 }
 
 function preview(bytes, emoji) {
@@ -109,7 +109,7 @@ function preview(bytes, emoji) {
 }
 
 function decodeFiles(files) {
-    for(const file of files) {
+    arrayFrom(files).forEach(file => {
         const reader = new FileReader();
         reader.addEventListener("loadend", () => {
             const input = new Uint8Array(reader.result);
@@ -126,11 +126,11 @@ function decodeFiles(files) {
             download(filename, new Blob([output]));
         });
         reader.readAsArrayBuffer(file);
-    }
+    });
 }
 
 function addFileListeners() {
-    for (const el of document.querySelectorAll('.uploadBlock input[type=file]')) {
+    arrayFrom(document.querySelectorAll('.uploadBlock input[type=file]')).forEach(el => {
         el.addEventListener('change', e => {
             const files = [...event.target.files];
             const isEncode = e.target
@@ -143,8 +143,7 @@ function addFileListeners() {
             handler(files);
         });
 
-    }
-
+    });
 }
 
 function download(filename, data) {
@@ -160,4 +159,8 @@ function download(filename, data) {
     document.body.removeChild(element);
 
     URL.revokeObjectURL(url);
+}
+
+function arrayFrom(xs) {
+    return [].slice.call(xs);
 }
