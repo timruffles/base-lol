@@ -164,7 +164,7 @@
                     preview([].slice.call(bytes, 0, BYTES_PREVIEW), encoded.slice(0, BYTES_PREVIEW * EMOJI_PER_BYTE * CHARACTERS_PER_EMOJI));
                 }
 
-                download(filename, new File([encoded], filename), document.querySelector('.uploadBlock[data-action=encode]'));
+                download(filename, new File([encoded], filename));
             });
             reader.readAsArrayBuffer(file);
         });
@@ -195,7 +195,7 @@
                 }
                 var filename = file.name.replace(/(\.[^\.]+)?\.base-lol$/, '.decoded$1');
 
-                download(filename, new File([output], filename), document.querySelector('.uploadBlock[data-action=decode]'));
+                download(filename, new File([output], filename));
             });
             reader.readAsArrayBuffer(file);
         });
@@ -213,26 +213,21 @@
         });
     }
 
-    function download(filename, data, targetEl) {
+    function download(filename, data) {
         showDeviceDownloadInstructions();
 
         var element = document.createElement('a');
         var url = URL.createObjectURL(data);
         element.setAttribute('href', url);
         element.setAttribute('download', filename);
-        element.innerHTML = filename;
 
-        element.style.display = isMobile() ? '' : 'none';
+        element.style.display = 'none';
+        document.body.appendChild(element);
 
-        // auto-download on desktop
-        if (isMobile()) {
-            targetEl.appendChild(element);
-        } else {
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
-            URL.revokeObjectURL(url);
-        }
+        element.click();
+        document.body.removeChild(element);
+
+        URL.revokeObjectURL(url);
     }
 
     function arrayFrom(xs) {
@@ -241,7 +236,6 @@
 
     function showDeviceDownloadInstructions() {
         if (isMobile() && !state.shownMobileWarning) {
-            state.shownMobileWarning = true;
             alert('Save the blob to Files, and you can reupload it.');
         }
     }
