@@ -160,7 +160,7 @@
                     preview([].slice.call(bytes, 0, BYTES_PREVIEW), encoded.slice(0, BYTES_PREVIEW * EMOJI_PER_BYTE * CHARACTERS_PER_EMOJI));
                 }
 
-                download(filename, new Blob([encoded]));
+                download(filename, new File([encoded], filename));
             });
             reader.readAsArrayBuffer(file);
         });
@@ -191,7 +191,7 @@
                 }
                 var filename = file.name.replace(/(\.[^\.]+)?\.base-lol$/, '.decoded$1');
 
-                download(filename, new Blob([output]));
+                download(filename, new File([output], filename));
             });
             reader.readAsArrayBuffer(file);
         });

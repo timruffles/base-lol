@@ -93,7 +93,7 @@ function encodeFiles(files) {
                 );
             }
 
-            download(filename, new Blob([encoded]));
+            download(filename, new File([encoded], filename));
         });
         reader.readAsArrayBuffer(file);
     });
@@ -123,7 +123,7 @@ function decodeFiles(files) {
             const filename = file.name.replace(/(\.[^\.]+)?\.base-lol$/,
                 '.decoded$1');
 
-            download(filename, new Blob([output]));
+            download(filename, new File([output], filename));
         });
         reader.readAsArrayBuffer(file);
     });
