@@ -1,8 +1,15 @@
+import './node_modules/fast-text-encoding/text.min.js';
 import { encode, decode, decodeString, encodeString } from './base-lol.mjs';
+
+const BYTES_PREVIEW = 4;
+const EMOJI_PER_BYTE = 4;
+// two JS chars per emoji
+const CHARACTERS_PER_EMOJI = 2;
 
 document.addEventListener('DOMContentLoaded', main);
 
 function main() {
+    // exposed for console-based fun
     window.baseLol = {
         encode,
         decode,
@@ -13,14 +20,10 @@ function main() {
     if(!assertBrowserSupport()) return;
 
     addDragListeners();
+    addFileListeners();
 }
 
 function assertBrowserSupport() {
-    if(typeof TextDecoder === 'undefined' || !('ondrop' in document.body)) {
-        alert("Sorry - this was a on-the-tube hack, only Browsers with TextDecoder and drag/drop");
-        return false;
-    }
-
     if(typeof Symbol === 'undefined') {
         alert("Sorry - this was a on-the-tube hack, ES2015+ browsers only :)");
         return false;
@@ -72,7 +75,7 @@ function addDragListeners() {
 
 
 function encodeFiles(files) {
-    for(const file of files) {
+    for(const [index, file] of files.entries()) {
         const reader = new FileReader();
         reader.addEventListener("loadend", () => {
             const bytes = new Uint8Array(reader.result);
@@ -83,10 +86,26 @@ function encodeFiles(files) {
             const filename = file.name.replace(/(\.[^\.]+)?$/,
                 '$1.base-lol');
 
+            if(index === 0) {
+                preview(
+                    Array.from(bytes.slice(0, BYTES_PREVIEW)),
+                    encoded.slice(0, BYTES_PREVIEW * EMOJI_PER_BYTE * CHARACTERS_PER_EMOJI)
+                );
+            }
+
             download(filename, new Blob([encoded]));
         });
         reader.readAsArrayBuffer(file);
     }
+}
+
+function preview(bytes, emoji) {
+    const status = document.querySelector('.status');
+    status.classList.remove('hidden');
+    const bytesAsString = bytes.map(i => `0x${i.toString(16)}`).join(' ');
+    status.querySelector('.bytePreview').innerHTML = bytesAsString;
+    status.querySelector('.previewCount').innerHTML = BYTES_PREVIEW;
+    status.querySelector('.preview').innerHTML = emoji;
 }
 
 function decodeFiles(files) {
@@ -108,6 +127,24 @@ function decodeFiles(files) {
         });
         reader.readAsArrayBuffer(file);
     }
+}
+
+function addFileListeners() {
+    for (const el of document.querySelectorAll('.uploadBlock input[type=file]')) {
+        el.addEventListener('change', e => {
+            const files = [...event.target.files];
+            const isEncode = e.target
+                    .closest('[data-action]').dataset.action
+                === 'encode';
+            const handler = isEncode
+                ? encodeFiles
+                : decodeFiles;
+
+            handler(files);
+        });
+
+    }
+
 }
 
 function download(filename, data) {

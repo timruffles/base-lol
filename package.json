@@ -4,6 +4,7 @@
   "description": "Encodes/decodes binary data as a sequence of emojis.",
   "scripts": {
     "build": "rollup -c && rollup -c rollup-node.config.js",
+    "watch:browser": "nodemon -w '*.js' -i dist --exec 'rollup -c'",
     "start": "browser-sync start --config bs-config.js",
     "demo": "./base-lol-bin base-lol-node.mjs < targets/max-tiny.jpg > tmp/demo.base-lol; head -c 20 tmp/demo.base-lol; ./base-lol-bin base-lol-node.mjs --decode < tmp/demo.base-lol > tmp/demo-decoded.jpg; diff tmp/demo-decoded.jpg targets/max-tiny.jpg",
     "test": "node base-lol.test.js"
@@ -22,6 +23,10 @@
   "devDependencies": {
     "babel-core": "6.26.3",
     "browser-sync": "2.24.4",
+    "nodemon": "1.17.5",
     "rollup": "0.60.2"
+  },
+  "dependencies": {
+    "fast-text-encoding": "1.0.0"
   }
 }
