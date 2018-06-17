@@ -173,7 +173,7 @@ function arrayFrom(xs) {
 
 function showDeviceDownloadInstructions() {
     if(isMobile() && !state.shownMobileWarning) {
-       alert(`Save the blob to Files, and you can reupload it.`);
+       alert(`ℹ️ If your mobile browser doesn't keep file extensions (iOS 🙈), manually rename it to see encode/decode`);
     }
 }
 

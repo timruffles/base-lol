@@ -236,7 +236,7 @@
 
     function showDeviceDownloadInstructions() {
         if (isMobile() && !state.shownMobileWarning) {
-            alert('Save the blob to Files, and you can reupload it.');
+            alert('\u2139\uFE0F If your mobile browser doesn\'t keep file extensions (iOS \uD83D\uDE48), manually rename it to see encode/decode');
         }
     }
 
