@@ -81,6 +81,10 @@
     // two JS chars per emoji
     var CHARACTERS_PER_EMOJI = 2;
 
+    var state = {
+        shownMobileWarning: false
+    };
+
     document.addEventListener('DOMContentLoaded', main);
 
     function main() {
@@ -210,6 +214,8 @@
     }
 
     function download(filename, data) {
+        showDeviceDownloadInstructions();
+
         var element = document.createElement('a');
         var url = URL.createObjectURL(data);
         element.setAttribute('href', url);
@@ -226,6 +232,18 @@
 
     function arrayFrom(xs) {
         return [].slice.call(xs);
+    }
+
+    function showDeviceDownloadInstructions() {
+        if (isMobile() && !state.shownMobileWarning) {
+            state.shownMobileWarning = true;
+            alert('Save the blob to Files, and you can reupload it.');
+        }
+    }
+
+    function isMobile() {
+        return (/Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile/.test(navigation.userAgent)
+        );
     }
 
 }());
