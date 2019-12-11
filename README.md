@@ -2,7 +2,7 @@
 
 Encodes/decodes binary data as a sequence of emojis.
 
-## Efficiency
+## Efficiency (Lack of)
 
 Encodes every byte as an emoji in utf8, so 32 bits! 25% efficient.
 
