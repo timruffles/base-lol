@@ -24,7 +24,7 @@
     "babel-core": "6.26.3",
     "babel-preset-env": "1.7.0",
     "babel-preset-es2015-rollup": "3.0.0",
-    "browser-sync": "2.24.4",
+    "browser-sync": "2.29.1",
     "nodemon": "1.17.5",
     "rollup": "0.60.2",
     "rollup-plugin-babel": "3.0.4"
